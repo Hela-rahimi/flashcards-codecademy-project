@@ -1,0 +1,32 @@
+import { createSlice } from '@reduxjs/toolkit';
+
+const topicsSlice = createSlice({
+  name: 'topics',
+  initialState: { topics: {} },
+  reducers: {
+    addTopic: (state, action) => {
+      const { topicId, name, icon } = action.payload;
+      state.topics[topicId] = {
+        id: topicId,
+        name: name,
+        icon: icon, // Fixed missing comma
+        quizIds: [],
+      };
+    },
+    addQuizId: (state, action) => {
+      const { topicId, quizId } = action.payload;
+      if (state.topics[topicId]) {
+        state.topics[topicId].quizIds.push(quizId);
+      } else {
+        console.error(`Topic with ID ${topicId} does not exist.`);
+      }
+    },
+  },
+});
+
+export const selectTopics = (state) => {
+  return state.topics.topics;
+};
+
+export const { addTopic, addQuizId } = topicsSlice.actions;
+export default topicsSlice.reducer;
